@@ -1,15 +1,28 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import useHttp from "../../hooks/use-http";
+import { useDispatch } from "react-redux";
+import AJAX from "../../lib/api";
+import { createRecipeObject } from "../../helpers";
+import { recipeActions } from "../../store/recipe";
 
 const RecipeItem = (props) => {
   const [curRecipeId, setCurRecipeId] = useState("");
+  const { sendRequest, status, data, error } = useHttp(AJAX);
+  const dispatch = useDispatch();
+  const { setCurRecipe } = recipeActions;
 
-  //   useEffect(() => {
-  //     curRecipeId = window.location.pathname.slice(1);
-  //   });
+  useEffect(() => {
+    if (status === "completed" && data) {
+      const recipe = createRecipeObject(data);
+      dispatch(setCurRecipe(recipe));
+    }
+  }, [status, data, dispatch, setCurRecipe]);
 
   const clickRecipeHandler = () => {
-    setCurRecipeId(window.location.pathname.slice(1));
+    sendRequest({
+      url: `https://forkify-api.herokuapp.com/api/v2/recipes/${props.id}?key=key=87d87f5c-0e59-44ec-b37e-233ec51c709f`,
+    });
   };
 
   const linkStyle =

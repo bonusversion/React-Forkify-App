@@ -1,19 +1,10 @@
 import RecipeItem from "./RecipeItem";
-import { useDispatch, useSelector } from "react-redux";
-import { searchActions } from "../../store/search";
+import { useSelector } from "react-redux";
 import Pagination from "./Pagination";
+import { Fragment } from "react";
 
 const RecipeList = () => {
-  const allRecipes = useSelector((state) => state.search.results);
   const pageRecipes = useSelector((state) => state.search.pageResults);
-  //   const resultsPerPage = useSelector((state) => state.search.resultsPerPage);
-  //   const page = useSelector((state) => state.search.page);
-  if (allRecipes.length === 0) return null;
-
-  //   const dispatch = useDispatch();
-  //   const start = (page - 1) * resultsPerPage;
-  //   const end = page * resultsPerPage;
-  //   const pageRecipes = allRecipes.slice(start, end);
 
   const recipesList = pageRecipes.map((recipe) => (
     <RecipeItem
@@ -26,8 +17,12 @@ const RecipeList = () => {
   ));
   return (
     <div className="search-results">
-      <ul className="results">{recipesList}</ul>
-      <Pagination />
+      {pageRecipes.length !== 0 && (
+        <Fragment>
+          <ul className="results">{recipesList}</ul>
+          <Pagination />
+        </Fragment>
+      )}
     </div>
   );
 };

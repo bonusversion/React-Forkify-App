@@ -1,29 +1,39 @@
-const Detail = () => {
+const Detail = (props) => {
   return (
     <div className="recipe__details">
       <div className="recipe__info">
         <svg className="recipe__info-icon">
-          <use href="src/img/icons.svg#icon-clock"></use>
+          <use href="/icons.svg#icon-clock"></use>
         </svg>
-        <span className="recipe__info-data recipe__info-data--minutes">45</span>
+        <span className="recipe__info-data recipe__info-data--minutes">
+          {props.cookTime}
+        </span>
         <span className="recipe__info-text">minutes</span>
       </div>
       <div className="recipe__info">
         <svg className="recipe__info-icon">
-          <use href="src/img/icons.svg#icon-users"></use>
+          <use href="/icons.svg#icon-users"></use>
         </svg>
-        <span className="recipe__info-data recipe__info-data--people">4</span>
+        <span className="recipe__info-data recipe__info-data--people">
+          {props.servings}
+        </span>
         <span className="recipe__info-text">servings</span>
 
         <div className="recipe__info-buttons">
-          <button className="btn--tiny btn--increase-servings">
+          <button
+            className="btn--tiny btn--update-servings"
+            data-update-to={props.servings - 1}
+          >
             <svg>
-              <use href="src/img/icons.svg#icon-minus-circle"></use>
+              <use href="/icons.svg#icon-minus-circle"></use>
             </svg>
           </button>
-          <button className="btn--tiny btn--increase-servings">
+          <button
+            className="btn--tiny btn--update-servings"
+            data-update-to={props.servings + 1}
+          >
             <svg>
-              <use href="src/img/icons.svg#icon-plus-circle"></use>
+              <use href="/icons.svg#icon-plus-circle"></use>
             </svg>
           </button>
         </div>
@@ -31,12 +41,12 @@ const Detail = () => {
 
       <div className="recipe__user-generated">
         <svg>
-          <use href="src/img/icons.svg#icon-user"></use>
+          <use href="/icons.svg#icon-user"></use>
         </svg>
       </div>
       <button className="btn--round">
         <svg className="">
-          <use href="src/img/icons.svg#icon-bookmark-fill"></use>
+          <use href="/icons.svg#icon-bookmark-fill"></use>
         </svg>
       </button>
     </div>

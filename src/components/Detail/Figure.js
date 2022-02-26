@@ -1,9 +1,9 @@
-const Figure = () => {
+const Figure = (props) => {
   return (
     <figure className="recipe__fig">
-      <img src="src/img/test-1.jpg" alt="Tomato" className="recipe__img" />
+      <img src={props.image} alt="Recipe Image" className="recipe__img" />
       <h1 className="recipe__title">
-        <span>Pasta with tomato cream sauce</span>
+        <span>{props.title}</span>
       </h1>
     </figure>
   );

@@ -1,4 +1,4 @@
-const NavigationAction = () => {
+const Navigation = () => {
   return (
     <nav className="nav">
       <ul className="nav__list">
@@ -37,4 +37,4 @@ const NavigationAction = () => {
   );
 };
 
-export default NavigationAction;
+export default Navigation;
