@@ -7,6 +7,7 @@ function App() {
   return (
     <Layout>
       <RecipeList />
+
       <Switch>
         <Route path="/:recipeId" exact>
           <RecipeDetail />

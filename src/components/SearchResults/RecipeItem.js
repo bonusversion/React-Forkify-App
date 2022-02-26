@@ -25,11 +25,11 @@ const RecipeItem = (props) => {
         <div className="preview__data">
           <h4 className="preview__title">{props.title}</h4>
           <p className="preview__publisher">{props.publisher}</p>
-          <div className="preview__user-generated">
+          {/* <div className="preview__user-generated">
             <svg>
               <use href="./icons.svg#icon-user"></use>
             </svg>
-          </div>
+          </div> */}
         </div>
       </Link>
     </li>

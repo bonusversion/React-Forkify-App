@@ -10,7 +10,7 @@ const SearchBar = () => {
   const { sendRequest, status, data, error } = useHttp(AJAX);
   const [enteredQuery, setEnteredQuery] = useState("");
 
-  const { loadSearchResults } = searchActions;
+  const { loadSearchResults, getSearchResultPage } = searchActions;
 
   const loadSearchResultsHandler = async (e) => {
     e.preventDefault();
@@ -32,6 +32,12 @@ const SearchBar = () => {
       dispatch(loadSearchResults(searchData));
     }
   }, [status, data, enteredQuery, dispatch, loadSearchResults]);
+
+  useEffect(() => {
+    if (status === "completed" && data) {
+      dispatch(getSearchResultPage(1));
+    }
+  }, [status, data, dispatch, getSearchResultPage]);
 
   return (
     <form className="search" onSubmit={loadSearchResultsHandler}>
