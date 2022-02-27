@@ -7,6 +7,13 @@ const recipeSlice = createSlice({
     setCurRecipe(state, action) {
       state.curRecipe = action.payload;
     },
+    updateServings(state, action) {
+      const updateTo = action.payload;
+      state.curRecipe.ingredients.forEach((ing) => {
+        ing.quantity = (ing.quantity * updateTo) / state.curRecipe.servings;
+      });
+      state.curRecipe.servings = updateTo;
+    },
   },
 });
 

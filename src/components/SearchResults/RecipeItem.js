@@ -1,20 +1,28 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AJAX from "../../lib/api";
 import { createRecipeObject } from "../../helpers";
 import { recipeActions } from "../../store/recipe";
 
 const RecipeItem = (props) => {
-  const [curRecipeId, setCurRecipeId] = useState("");
+  const [isHere, setIsHere] = useState(false);
+  let curRecipeId;
+  const curRecipe = useSelector((state) => state.recipe.curRecipe);
+  if (curRecipe) {
+    curRecipeId = curRecipe.id;
+  }
+
   const { sendRequest, status, data, error } = useHttp(AJAX);
   const dispatch = useDispatch();
   const { setCurRecipe } = recipeActions;
 
   useEffect(() => {
+    console.log("status", status);
     if (status === "completed" && data) {
       const recipe = createRecipeObject(data);
+
       dispatch(setCurRecipe(recipe));
     }
   }, [status, data, dispatch, setCurRecipe]);

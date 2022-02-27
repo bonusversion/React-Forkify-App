@@ -18,7 +18,7 @@ const Specification = () => {
   const recipe = useSelector((state) => state.recipe.curRecipe);
   let content;
 
-  console.log(recipe);
+  // console.log(, recipe);
 
   if (!recipe) {
     content = (
@@ -37,25 +37,17 @@ const Specification = () => {
     content = (
       <Fragment>
         <Figure title={recipe.title} image={recipe.image} />
-        <Detail cookTime={recipe.cookTime} servings={recipe.servings} />
+        <Detail
+          id={recipe.id}
+          cookTime={recipe.cookTime}
+          servings={recipe.servings}
+          bookmarked={recipe.bookmarked}
+        />
         <Ingredient ingredients={recipe.ingredients} />
         <Direction publisher={recipe.publisher} sourceUrl={recipe.sourceUrl} />
       </Fragment>
     );
   }
-
-  // useEffect(() => {
-  //   sendRequest({
-  //     url: `https://forkify-api.herokuapp.com/api/v2/recipes/${id}?key=key=87d87f5c-0e59-44ec-b37e-233ec51c709f`,
-  //   });
-  // }, [sendRequest]);
-
-  // useEffect(() => {
-  //   if (status === "completed" && data) {
-  //     const recipe = createRecipeObject(data);
-  //     dispatch(recipeActions.setCurRecipe(recipe));
-  //   }
-  // }, []);
 
   return <div className="recipe">{content}</div>;
 };

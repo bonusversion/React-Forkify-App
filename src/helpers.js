@@ -1,6 +1,6 @@
 export const createRecipeObject = function (data) {
   const { recipe } = data;
-  console.log("recipe", recipe);
+
   return {
     id: recipe.id,
     title: recipe.title,
