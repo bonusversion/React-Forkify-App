@@ -15,9 +15,22 @@ const Specification = () => {
   const id = useParams().recipeId;
   const { sendRequest, status, data, error } = useHttp(AJAX);
   const dispatch = useDispatch();
-
   const recipe = useSelector((state) => state.recipe.curRecipe);
+  const { setCurRecipe } = recipeActions;
   let content;
+
+  useEffect(() => {
+    sendRequest({
+      url: `https://forkify-api.herokuapp.com/api/v2/recipes/${id}?key=87d87f5c-0e59-44ec-b37e-233ec51c709f`,
+    });
+  }, [id, sendRequest]);
+
+  useEffect(() => {
+    if (status === "completed" && data) {
+      const recipe = createRecipeObject(data);
+      dispatch(setCurRecipe(recipe));
+    }
+  }, [status, data, dispatch, setCurRecipe]);
 
   if (!recipe) {
     content = (
@@ -50,6 +63,19 @@ const Specification = () => {
 
   if (status === "pending") {
     content = <LoadingSpinner />;
+  }
+
+  if (status === "completed" && error) {
+    content = (
+      <div class="error">
+        <div>
+          <svg>
+            <use href="./icons.svg#icon-alert-triangle"></use>
+          </svg>
+        </div>
+        <p>{error}</p>
+      </div>
+    );
   }
 
   return <div className="recipe">{content}</div>;

@@ -14,30 +14,30 @@ const RecipeItem = (props) => {
     curRecipeId = curRecipe.id;
   }
 
-  const { sendRequest, status, data, error } = useHttp(AJAX);
-  const dispatch = useDispatch();
-  const { setCurRecipe } = recipeActions;
+  // const { sendRequest, status, data, error } = useHttp(AJAX);
+  // const dispatch = useDispatch();
+  // const { setCurRecipe } = recipeActions;
 
-  useEffect(() => {
-    if (status === "completed" && data) {
-      const recipe = createRecipeObject(data);
+  // useEffect(() => {
+  //   if (status === "completed" && data) {
+  //     const recipe = createRecipeObject(data);
 
-      dispatch(setCurRecipe(recipe));
-    }
-  }, [status, data, dispatch, setCurRecipe]);
+  //     dispatch(setCurRecipe(recipe));
+  //   }
+  // }, [status, data, dispatch, setCurRecipe]);
 
-  const clickRecipeHandler = () => {
-    sendRequest({
-      url: `https://forkify-api.herokuapp.com/api/v2/recipes/${props.id}?key=87d87f5c-0e59-44ec-b37e-233ec51c709f`,
-    });
-  };
+  // const clickRecipeHandler = () => {
+  //   sendRequest({
+  //     url: `https://forkify-api.herokuapp.com/api/v2/recipes/${props.id}?key=87d87f5c-0e59-44ec-b37e-233ec51c709f`,
+  //   });
+  // };
 
   const linkStyle =
     "preview__link " +
     (curRecipeId === props.id ? "preview__link--active" : "");
 
   return (
-    <li className="preview" onClick={clickRecipeHandler}>
+    <li className="preview">
       <Link to={`${props.id}`} className={linkStyle}>
         <figure className="preview__fig">
           <img src={props.image} alt="Test" />
