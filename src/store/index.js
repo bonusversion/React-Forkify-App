@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import searchReducer from "./search";
-import recipeReducer from "./recipe";
-import bookmarkReducer from "./bookmark";
+import searchReducer from "./search-slice";
+import recipeReducer from "./recipe-slice";
+import bookmarkReducer from "./bookmark-slice";
 
 const store = configureStore({
   reducer: {

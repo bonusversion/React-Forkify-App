@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { searchActions } from "../../store/search";
+import { searchActions } from "../../store/search-slice";
 
 const Pagination = () => {
   const dispatch = useDispatch();
   const curPage = useSelector((state) => state.search.page);
   const resultsPerPage = useSelector((state) => state.search.resultsPerPage);
   const allRecipes = useSelector((state) => state.search.results);
+  if (!allRecipes) return null;
   const numPages = Math.ceil(allRecipes.length / resultsPerPage);
 
   const goToPageHandler = (e) => {

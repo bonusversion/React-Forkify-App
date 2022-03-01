@@ -1,4 +1,4 @@
-const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes/";
+const API_URL = "";
 const TIMEOUT_SEC = 10;
 const KEY = "87d87f5c-0e59-44ec-b37e-233ec51c709f";
 const MODAL_CLOSE_SEC = 2.5;
@@ -13,10 +13,10 @@ const timeout = (s) => {
 
 const AJAX = async function (requestData) {
   try {
-    const fetchPro = requestData.uploadedData
+    const fetchPro = requestData.uploadData
       ? fetch(requestData.url, {
           method: "POST",
-          body: JSON.stringify(requestData.uploadedData),
+          body: JSON.stringify(requestData.uploadData),
           headers: {
             "Content-Type": "application/json",
           },
@@ -24,9 +24,11 @@ const AJAX = async function (requestData) {
       : fetch(requestData.url);
 
     const response = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
-    const data = await response.json();
 
-    if (!response.ok) throw new Error(`${data.message} (${res.status})`);
+    const data = await response.json();
+    console.log(data);
+
+    if (!response.ok) throw new Error(`${data.message} (${response.status})`);
     return data;
   } catch (error) {
     console.log(error);

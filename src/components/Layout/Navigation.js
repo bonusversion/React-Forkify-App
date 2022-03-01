@@ -1,8 +1,11 @@
+import { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
 import RecipeItem from "../SearchResults/RecipeItem";
+import RecipeForm from "../RecipeForm/RecipeForm";
 
 const Navigation = () => {
   let bookmarkList;
+  const [showForm, setShowForm] = useState();
   const bookmarkedRecipes = useSelector(
     (state) => state.bookmark.bookmarkedRecipes
   );
@@ -30,30 +33,37 @@ const Navigation = () => {
     ));
   }
 
+  const toggleFormHandler = () => {
+    setShowForm((prev) => !prev);
+  };
+
   return (
-    <nav className="nav">
-      <ul className="nav__list">
-        <li className="nav__item">
-          <button className="nav__btn nav__btn--add-recipe">
-            <svg className="nav__icon">
-              <use href="./icons.svg#icon-edit"></use>
-            </svg>
-            <span>Add recipe</span>
-          </button>
-        </li>
-        <li className="nav__item">
-          <button className="nav__btn nav__btn--bookmarks">
-            <svg className="nav__icon">
-              <use href="./icons.svg#icon-bookmark"></use>
-            </svg>
-            <span>Bookmarks</span>
-          </button>
-          <div className="bookmarks">
-            <ul className="bookmarks__list">{bookmarkList}</ul>
-          </div>
-        </li>
-      </ul>
-    </nav>
+    <Fragment>
+      <nav className="nav">
+        <ul className="nav__list">
+          <li onClick={toggleFormHandler} className="nav__item">
+            <button className="nav__btn nav__btn--add-recipe">
+              <svg className="nav__icon">
+                <use href="./icons.svg#icon-edit"></use>
+              </svg>
+              <span>Add recipe</span>
+            </button>
+          </li>
+          <li className="nav__item">
+            <button className="nav__btn nav__btn--bookmarks">
+              <svg className="nav__icon">
+                <use href="./icons.svg#icon-bookmark"></use>
+              </svg>
+              <span>Bookmarks</span>
+            </button>
+            <div className="bookmarks">
+              <ul className="bookmarks__list">{bookmarkList}</ul>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      {showForm && <RecipeForm onCloseForm={toggleFormHandler} />}
+    </Fragment>
   );
 };
 

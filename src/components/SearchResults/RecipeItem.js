@@ -4,7 +4,7 @@ import useHttp from "../../hooks/use-http";
 import { useDispatch, useSelector } from "react-redux";
 import AJAX from "../../lib/api";
 import { createRecipeObject } from "../../helpers";
-import { recipeActions } from "../../store/recipe";
+import { recipeActions } from "../../store/recipe-slice";
 
 const RecipeItem = (props) => {
   const [isHere, setIsHere] = useState(false);
@@ -19,7 +19,6 @@ const RecipeItem = (props) => {
   const { setCurRecipe } = recipeActions;
 
   useEffect(() => {
-    console.log("status", status);
     if (status === "completed" && data) {
       const recipe = createRecipeObject(data);
 
@@ -29,7 +28,7 @@ const RecipeItem = (props) => {
 
   const clickRecipeHandler = () => {
     sendRequest({
-      url: `https://forkify-api.herokuapp.com/api/v2/recipes/${props.id}?key=key=87d87f5c-0e59-44ec-b37e-233ec51c709f`,
+      url: `https://forkify-api.herokuapp.com/api/v2/recipes/${props.id}?key=87d87f5c-0e59-44ec-b37e-233ec51c709f`,
     });
   };
 

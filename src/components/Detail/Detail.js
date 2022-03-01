@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
-import { recipeActions } from "../../store/recipe";
+import { recipeActions } from "../../store/recipe-slice";
 import { useSelector } from "react-redux";
-import { bookmarkActions } from "../../store/bookmark";
+import { bookmarkActions } from "../../store/bookmark-slice";
 const Detail = (props) => {
   const dispatch = useDispatch();
   const recipe = useSelector((state) => state.recipe.curRecipe);
@@ -37,7 +37,7 @@ const Detail = (props) => {
           <use href="/icons.svg#icon-clock"></use>
         </svg>
         <span className="recipe__info-data recipe__info-data--minutes">
-          {props.cookTime}
+          {props.cookingTime}
         </span>
         <span className="recipe__info-text">minutes</span>
       </div>

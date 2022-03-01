@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { searchActions } from "../../store/search";
+import { Fragment, useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
+import { searchActions } from "../../store/search-slice";
 import { useDispatch, useSelector } from "react-redux";
 import AJAX from "../../lib/api";
 import useHttp from "../../hooks/use-http";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const SearchBar = () => {
   const queryInputRef = useRef();
@@ -10,11 +12,13 @@ const SearchBar = () => {
   const { sendRequest, status, data, error } = useHttp(AJAX);
   const [enteredQuery, setEnteredQuery] = useState("");
 
-  const { loadSearchResults, getSearchResultPage } = searchActions;
+  const { setError, setLoadStatus, loadSearchResults, getSearchResultPage } =
+    searchActions;
 
   const loadSearchResultsHandler = async (e) => {
     e.preventDefault();
 
+    const enteredQuery = queryInputRef.current.value;
     setEnteredQuery(queryInputRef.current.value);
     if (!enteredQuery) return;
 
@@ -24,36 +28,51 @@ const SearchBar = () => {
   };
 
   useEffect(() => {
+    if (status === "pending") {
+      dispatch(setLoadStatus(true));
+    }
+  }, [status, dispatch, setLoadStatus]);
+
+  useEffect(() => {
     if (status === "completed" && data) {
       const searchData = {
         query: enteredQuery,
         results: data.recipes,
       };
       dispatch(loadSearchResults(searchData));
+      dispatch(getSearchResultPage(1));
     }
   }, [status, data, enteredQuery, dispatch, loadSearchResults]);
 
   useEffect(() => {
-    if (status === "completed" && data) {
-      dispatch(getSearchResultPage(1));
+    if (status === "completed" && error) {
+      dispatch(setError(error));
     }
-  }, [status, data, dispatch, getSearchResultPage]);
+  }, [status, dispatch, setError]);
+
+  // useEffect(() => {
+  //   if (status === "completed" && data) {
+  //     dispatch(getSearchResultPage(1));
+  //   }
+  // }, [status, data, dispatch, getSearchResultPage]);
 
   return (
-    <form className="search" onSubmit={loadSearchResultsHandler}>
-      <input
-        ref={queryInputRef}
-        type="text"
-        className="search__field"
-        placeholder="Search over 1,000,000 recipes..."
-      />
-      <button className="btn search__btn">
-        <svg className="search__icon">
-          <use href="./icons.svg#icon-search"></use>
-        </svg>
-        <span>Search</span>
-      </button>
-    </form>
+    <Fragment>
+      <form className="search" onSubmit={loadSearchResultsHandler}>
+        <input
+          ref={queryInputRef}
+          type="text"
+          className="search__field"
+          placeholder="Search over 1,000,000 recipes..."
+        />
+        <button className="btn search__btn">
+          <svg className="search__icon">
+            <use href="./icons.svg#icon-search"></use>
+          </svg>
+          <span>Search</span>
+        </button>
+      </form>
+    </Fragment>
   );
 };
 

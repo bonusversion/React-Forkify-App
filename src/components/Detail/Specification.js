@@ -8,7 +8,8 @@ import useHttp from "../../hooks/use-http";
 import AJAX from "../../lib/api";
 import { createRecipeObject } from "../../helpers";
 import { useDispatch, useSelector } from "react-redux";
-import { recipeActions } from "../../store/recipe";
+import { recipeActions } from "../../store/recipe-slice";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const Specification = () => {
   const id = useParams().recipeId;
@@ -17,8 +18,6 @@ const Specification = () => {
 
   const recipe = useSelector((state) => state.recipe.curRecipe);
   let content;
-
-  // console.log(, recipe);
 
   if (!recipe) {
     content = (
@@ -39,7 +38,7 @@ const Specification = () => {
         <Figure title={recipe.title} image={recipe.image} />
         <Detail
           id={recipe.id}
-          cookTime={recipe.cookTime}
+          cookingTime={recipe.cookingTime}
           servings={recipe.servings}
           bookmarked={recipe.bookmarked}
         />
@@ -47,6 +46,10 @@ const Specification = () => {
         <Direction publisher={recipe.publisher} sourceUrl={recipe.sourceUrl} />
       </Fragment>
     );
+  }
+
+  if (status === "pending") {
+    content = <LoadingSpinner />;
   }
 
   return <div className="recipe">{content}</div>;
