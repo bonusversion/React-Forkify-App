@@ -1,22 +1,46 @@
 import RecipeItem from "./RecipeItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Pagination from "./Pagination";
 import { Fragment, useEffect } from "react";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import useHttp from "../../hooks/use-http";
+import { searchActions } from "../../store/search-slice";
+import AJAX from "../../lib/api";
 
 const RecipeList = () => {
+  const query = useSelector((state) => state.search.query);
   const pageRecipes = useSelector((state) => state.search.pageResults);
-  const isLoading = useSelector((state) => state.search.loadStatus);
-  const error = useSelector((state) => state.search.error);
-  let recipesList;
+
+  const { loadSearchResults, getSearchResultPage } = searchActions;
+  const dispatch = useDispatch();
+  const { sendRequest, status, data, error } = useHttp(AJAX);
+  let content;
+
+  useEffect(() => {
+    if (query) {
+      sendRequest({
+        url: `https://forkify-api.herokuapp.com/api/v2/recipes/?search=${query}&key=87d87f5c-0e59-44ec-b37e-233ec51c709f`,
+      });
+    }
+  }, [query, sendRequest]);
+
+  useEffect(() => {
+    if (status === "completed" && data) {
+      const searchData = {
+        results: data.recipes,
+      };
+      dispatch(loadSearchResults(searchData));
+      dispatch(getSearchResultPage(1));
+    }
+  }, [status, data, dispatch, loadSearchResults, getSearchResultPage]);
 
   if (!pageRecipes) {
-    recipesList = null;
+    content = null;
   }
 
   if (pageRecipes && pageRecipes.length === 0) {
-    recipesList = (
-      <div class="error">
+    content = (
+      <div className="error">
         <div>
           <svg>
             <use href="./icons.svg#icon-alert-triangle"></use>
@@ -28,7 +52,7 @@ const RecipeList = () => {
   }
 
   if (pageRecipes && pageRecipes.length !== 0) {
-    recipesList = pageRecipes.map((recipe) => (
+    content = pageRecipes.map((recipe) => (
       <RecipeItem
         key={recipe.id}
         id={recipe.id}
@@ -39,9 +63,13 @@ const RecipeList = () => {
     ));
   }
 
-  if (error) {
-    recipesList = (
-      <div class="error">
+  if (status === "pending") {
+    content = <LoadingSpinner />;
+  }
+
+  if (status === "completed" && error) {
+    content = (
+      <div className="error">
         <div>
           <svg>
             <use href="./icons.svg#icon-alert-triangle"></use>
@@ -51,15 +79,10 @@ const RecipeList = () => {
       </div>
     );
   }
-
-  if (isLoading) {
-    recipesList = <LoadingSpinner />;
-  }
-
   return (
     <div className="search-results">
       <Fragment>
-        <ul className="results">{recipesList}</ul>
+        <ul className="results">{content}</ul>
         <Pagination />
       </Fragment>
     </div>

@@ -1,7 +1,4 @@
-const API_URL = "";
 const TIMEOUT_SEC = 10;
-const KEY = "87d87f5c-0e59-44ec-b37e-233ec51c709f";
-const MODAL_CLOSE_SEC = 2.5;
 
 const timeout = (s) => {
   return new Promise((_, reject) => {
@@ -26,12 +23,10 @@ const AJAX = async function (requestData) {
     const response = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
 
     const data = await response.json();
-    console.log(data);
 
     if (!response.ok) throw new Error(`${data.message} (${response.status})`);
     return data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };

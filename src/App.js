@@ -2,8 +2,16 @@ import Layout from "./components/Layout/Layout";
 import RecipeList from "./components/SearchResults/RecipeList";
 import { Route, Switch } from "react-router-dom";
 import RecipeDetail from "./pages/RecipeDetail";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { bookmarkActions } from "./store/bookmark-slice";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(bookmarkActions.loadBookmark());
+  }, [dispatch]);
+
   return (
     <Layout>
       <RecipeList />

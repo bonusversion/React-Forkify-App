@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const RES_PER_PAGE = 10;
 
 const initialSearchState = {
-  query: "",
+  query: null,
   results: null,
   pageResults: null,
   page: 1,
@@ -16,10 +16,13 @@ const searchSlice = createSlice({
   name: "search",
   initialState: initialSearchState,
   reducers: {
+    setQuery(state, action) {
+      state.query = action.payload;
+    },
     loadSearchResults(state, action) {
       return {
         ...initialSearchState,
-        query: action.payload.query,
+        query: state.query,
         results: action.payload.results,
       };
     },

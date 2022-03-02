@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useState } from "react";
+import { useCallback, useReducer } from "react";
 
 const httpReducer = (state, action) => {
   if (action.type === "SEND") {
@@ -34,7 +34,6 @@ const useHttp = (requestFunction) => {
 
   const sendRequest = useCallback(
     async (requestData) => {
-      console.log("useHttp");
       dispatch({ type: "SEND" });
       try {
         const responseData = await requestFunction(requestData);
@@ -44,7 +43,6 @@ const useHttp = (requestFunction) => {
           responseData: responseData.data,
         });
       } catch (error) {
-        console.log("catched!");
         const errorMessage = error.message;
         dispatch({
           type: "ERROR",
