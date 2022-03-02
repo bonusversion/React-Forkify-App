@@ -70,7 +70,7 @@ const Detail = (props) => {
         </div>
       </div>
 
-      <div className="recipe__user-generated">
+      <div className={"recipe__user-generated " + (!props.tag && "hidden")}>
         <svg>
           <use href="/icons.svg#icon-user"></use>
         </svg>

@@ -1,47 +1,24 @@
-import { Fragment, useState } from "react";
-import { useSelector } from "react-redux";
-import RecipeItem from "../SearchResults/RecipeItem";
+import { Fragment, useCallback, useEffect, useState } from "react";
+
 import RecipeForm from "../RecipeForm/RecipeForm";
+import BookmarksList from "./BookmarkList";
 
 const Navigation = () => {
-  let bookmarkList;
-  const [showForm, setShowForm] = useState();
-  const bookmarkedRecipes = useSelector(
-    (state) => state.bookmark.bookmarkedRecipes
-  );
+  const [showFormModal, setShowFormModal] = useState(false);
 
-  if (bookmarkedRecipes.length === 0) {
-    bookmarkList = (
-      <div className="message">
-        <div>
-          <svg>
-            <use href="/icons.svg#icon-smile"></use>
-          </svg>
-        </div>
-        <p>No bookmarks yet. Find a nice recipe and bookmark it :{")"}</p>
-      </div>
-    );
-  } else {
-    bookmarkList = bookmarkedRecipes.map((recipe) => (
-      <RecipeItem
-        key={recipe.id}
-        id={recipe.id}
-        image={recipe.image}
-        publisher={recipe.publisher}
-        title={recipe.title}
-      />
-    ));
-  }
-
-  const toggleFormHandler = () => {
-    setShowForm((prev) => !prev);
+  const openFormHandler = () => {
+    setShowFormModal(true);
   };
+
+  const closeFormHandler = useCallback(() => {
+    setShowFormModal(false);
+  }, [setShowFormModal]);
 
   return (
     <Fragment>
       <nav className="nav">
         <ul className="nav__list">
-          <li onClick={toggleFormHandler} className="nav__item">
+          <li onClick={openFormHandler} className="nav__item">
             <button className="nav__btn nav__btn--add-recipe">
               <svg className="nav__icon">
                 <use href="./icons.svg#icon-edit"></use>
@@ -56,13 +33,11 @@ const Navigation = () => {
               </svg>
               <span>Bookmarks</span>
             </button>
-            <div className="bookmarks">
-              <ul className="bookmarks__list">{bookmarkList}</ul>
-            </div>
+            <BookmarksList />
           </li>
         </ul>
       </nav>
-      {showForm && <RecipeForm onCloseForm={toggleFormHandler} />}
+      {showFormModal && <RecipeForm onCloseForm={closeFormHandler} />}
     </Fragment>
   );
 };

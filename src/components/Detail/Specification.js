@@ -50,6 +50,7 @@ const Specification = () => {
       <Fragment>
         <Figure title={recipe.title} image={recipe.image} />
         <Detail
+          tag={recipe.key}
           id={recipe.id}
           cookingTime={recipe.cookingTime}
           servings={recipe.servings}

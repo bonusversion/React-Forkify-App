@@ -14,24 +14,6 @@ const RecipeItem = (props) => {
     curRecipeId = curRecipe.id;
   }
 
-  // const { sendRequest, status, data, error } = useHttp(AJAX);
-  // const dispatch = useDispatch();
-  // const { setCurRecipe } = recipeActions;
-
-  // useEffect(() => {
-  //   if (status === "completed" && data) {
-  //     const recipe = createRecipeObject(data);
-
-  //     dispatch(setCurRecipe(recipe));
-  //   }
-  // }, [status, data, dispatch, setCurRecipe]);
-
-  // const clickRecipeHandler = () => {
-  //   sendRequest({
-  //     url: `https://forkify-api.herokuapp.com/api/v2/recipes/${props.id}?key=87d87f5c-0e59-44ec-b37e-233ec51c709f`,
-  //   });
-  // };
-
   const linkStyle =
     "preview__link " +
     (curRecipeId === props.id ? "preview__link--active" : "");
@@ -45,11 +27,13 @@ const RecipeItem = (props) => {
         <div className="preview__data">
           <h4 className="preview__title">{props.title}</h4>
           <p className="preview__publisher">{props.publisher}</p>
-          {/* <div className="preview__user-generated">
-            <svg>
-              <use href="./icons.svg#icon-user"></use>
-            </svg>
-          </div> */}
+          {props.tag && (
+            <div className="preview__user-generated">
+              <svg>
+                <use href="./icons.svg#icon-user"></use>
+              </svg>
+            </div>
+          )}
         </div>
       </Link>
     </li>

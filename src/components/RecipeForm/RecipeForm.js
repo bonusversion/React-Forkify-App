@@ -1,14 +1,22 @@
-import { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import useHttp from "../../hooks/use-http";
 import AJAX from "../../lib/api";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import { useDispatch } from "react-redux";
+import { bookmarkActions } from "../../store/bookmark-slice";
+import { recipeActions } from "../../store/recipe-slice";
+import { createRecipeObject } from "../../helpers";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-const RecipeForm = (props) => {
+const RecipeForm = React.memo((props) => {
   const { sendRequest, data, status, error } = useHttp(AJAX);
   const [showForm, setShowForm] = useState(true);
   const [formData, setFormData] = useState(null);
   const [otherContent, setOtherContent] = useState(null);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  let newRecipe;
 
   useEffect(() => {
     if (status === "pending") {
@@ -31,8 +39,12 @@ const RecipeForm = (props) => {
     }
 
     if (status === "completed" && data) {
+      newRecipe = createRecipeObject(data);
+      dispatch(bookmarkActions.addBookmark(newRecipe));
+      dispatch(recipeActions.setCurRecipe(newRecipe));
+      history.push("/" + newRecipe.id);
       const markup = (
-        <div class="message">
+        <div className="message">
           <div>
             <svg>
               <use href="./icons.svg#icon-smile"></use>
@@ -42,8 +54,11 @@ const RecipeForm = (props) => {
         </div>
       );
       setOtherContent(markup);
+      setTimeout(() => {
+        props.onCloseForm();
+      }, 2000);
     }
-  }, [status, data, error]);
+  }, [status, data, error, dispatch, props]);
 
   const closeFormHandler = () => {
     props.onCloseForm();
@@ -113,7 +128,7 @@ const RecipeForm = (props) => {
   return (
     <Fragment>
       {ReactDOM.createPortal(
-        <div className="overlay"></div>,
+        <div className="overlay" onClick={props.onClick}></div>,
         document.getElementById("overlay-root")
       )}
       {ReactDOM.createPortal(
@@ -272,6 +287,6 @@ const RecipeForm = (props) => {
       )}
     </Fragment>
   );
-};
+});
 
 export default RecipeForm;

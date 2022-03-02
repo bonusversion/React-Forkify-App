@@ -55,6 +55,7 @@ const RecipeList = () => {
     content = pageRecipes.map((recipe) => (
       <RecipeItem
         key={recipe.id}
+        tag={recipe.key}
         id={recipe.id}
         image={recipe["image_url"]}
         publisher={recipe.publisher}
